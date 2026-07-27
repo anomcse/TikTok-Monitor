@@ -1,0 +1,84 @@
+{
+  "timezone": "America/Sao_Paulo",
+
+  "tiktok": {
+    "rateLimitCooldownMinutes": 1,
+    "webTimeoutMs": 20000,
+    "wsTimeoutMs": 20000,
+    "ttTargetIdc": "",
+    "enableExtendedGiftInfo": false
+  },
+
+  "heartbeatTimeoutMs": 300000,
+  "statusRefreshMs": 10000,
+  "updateListsMs": 10000,
+  "connectStaggerMs": 15000,
+  "cooldownWhenOfflineMinutes": 3,
+  "offlineCheckEveryMs": 60000,
+
+  "dedupeTtlMs": 3000,
+  "dedupeKeepMs": 60000,
+  "dedupeCleanupEveryMs": 30000,
+
+  "flushEveryMs": 1200,
+  "flushMaxLines": 40,
+
+  "antiSpam": {
+    "logReconnectEveryMs": 30000,
+    "sameUserMaxMsgs": 5,
+    "sameUserWindowMs": 10000
+  },
+
+  "alerts": {
+    "enabled": true,
+    "keywords": [
+      "pix",
+      "tigrinho",
+      "golpe",
+      "link",
+      "whatsapp",
+      "telegram",
+      "promo",
+      "sorteio",
+      "clique",
+      "ganhar dinheiro"
+    ],
+    "gifts": {
+      "enabled": true,
+      "minRepeatCount": 5,
+      "minCoins": 100,
+      "names": []
+    }
+  },
+
+  "viewersLogMinIntervalMs": 30000,
+
+  "paths": {
+    "txtRoot": "logs",
+    "jsonlRoot": "logs_jsonl",
+    "highlightRoot": "logs_highlight"
+  },
+
+  "logRotation": {
+    "maxFileBytes": 10485760,
+    "maxBackups": 3
+  },
+
+  "snapshots": {
+    "enabled": true,
+    "intervalMs": 60000,
+    "topNConsole": 3,
+    "topNSnapshot": 10
+  },
+
+  "spike": {
+    "enabled": true,
+    "minMsgsPerMin": 25,
+    "multiplier": 2.0,
+    "minDelta": 15
+  },
+
+  "autoPauseOnCircuitOpen": {
+    "enabled": true
+  }
+}

@@ -1,0 +1,35 @@
+{
+    "name":  "ttklive-monitor",
+    "version": "1.1.0",
+    "description":  "TTKLiveMonitor - Monitor de lives TikTok em tempo real.",
+    "main":  "index.js",
+    "type":  "module",
+    "scripts":  {
+                    "start": "node launcher.js",
+                    "bot":  "node index.js",
+                    "dashboard":  "node dashboard/server.js",
+                    "dev":  "concurrently \"node index.js\" \"node dashboard/server.js\""
+                },
+    "keywords":  [
+                     "tiktok",
+                     "live",
+                     "api",
+                     "chat",
+                     "gifts"
+                 ],
+    "author":  "Zer0dytrash",
+    "license":  "MIT",
+    "engines": {
+        "node": ">=20.0.0"
+    },
+    "dependencies":  {
+                         "chalk":  "^5.3.0",
+                         "express":  "^5.2.1",
+                         "tiktok-live-connector":  "^2.4.3",
+                         "websocket":  "^1.0.34"
+                     },
+    "readmeFilename":  "README.md",
+    "devDependencies":  {
+                            "concurrently":  "^9.2.1"
+                        }
+}
