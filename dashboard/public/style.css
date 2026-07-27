@@ -1,0 +1,1077 @@
+﻿/* ============================================================
+   TTKLiveMonitor — Dashboard
+   Glassmorphism / TikTok brand palette
+   Brand colors are official: Cyan #25F4EE · Red #FE2C55 · Black · White
+   (source: TikTok public brand guidelines)
+   ============================================================ */
+
+:root {
+  /* ---- Canvas ---- */
+  --bg: #050507;
+  --bg-elevated: #0b0b10;
+
+  /* ---- Glass surfaces ---- */
+  --glass: rgba(255,255,255,0.05);
+  --glass-strong: rgba(255,255,255,0.09);
+  --glass-border: rgba(255,255,255,0.13);
+  --glass-blur: blur(20px) saturate(150%);
+  --glass-blur-sm: blur(12px) saturate(140%);
+
+  /* ---- Text ---- */
+  --text: #f5f8f8;
+  --muted: rgba(245,248,248,0.62);
+  --border: rgba(255,255,255,0.13);
+
+  /* ---- Brand (official TikTok hex) ---- */
+  --black: #000000;
+  --white: #ffffff;
+  --tiktok-cyan: #25f4ee;
+  --tiktok-pink: #fe2c55;
+
+  --green: var(--tiktok-cyan);
+  --red: var(--tiktok-pink);
+  --yellow: var(--tiktok-pink);
+  --blue: var(--tiktok-cyan);
+  --accentA: var(--tiktok-cyan);
+  --accentB: var(--tiktok-pink);
+
+  /* ---- Type ---- */
+  --font-display: "Archivo Black", "Arial Black", "Segoe UI", sans-serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* ---- Semantic tones (unchanged mapping, new rendering) ---- */
+  --tone-chat: var(--tiktok-cyan);
+  --tone-gift: var(--tiktok-pink);
+  --tone-follow: var(--tiktok-cyan);
+  --tone-share: var(--tiktok-cyan);
+  --tone-member: var(--tiktok-pink);
+  --tone-roomUser: var(--tiktok-cyan);
+  --tone-like: var(--tiktok-pink);
+  --tone-alert: var(--tiktok-pink);
+  --tone-system: var(--white);
+  --tone-peak: var(--tiktok-pink);
+  --tone-current: var(--tiktok-cyan);
+  --tone-mpm: var(--tiktok-cyan);
+}
+
+* { box-sizing: border-box; }
+
+::selection {
+  background: color-mix(in srgb, var(--tiktok-cyan) 40%, transparent);
+  color: #000;
+}
+
+/* ============================================================
+   Canvas & background
+   Two isolated corner glows (cyan top-left, pink bottom-right).
+   They never overlap and use normal blending only — no
+   mix-blend-mode, no muddy teal/green cast.
+   ============================================================ */
+
+body {
+  position: relative;
+  margin: 0;
+  font-family: var(--font-body);
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(120px);
+  will-change: transform, opacity;
+}
+
+body::before {
+  width: 60vw;
+  height: 60vw;
+  max-width: 900px;
+  max-height: 900px;
+  top: -24vw;
+  left: -24vw;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tiktok-cyan) 30%, transparent), transparent 72%);
+  animation: driftCyan 22s ease-in-out infinite alternate;
+}
+
+body::after {
+  width: 55vw;
+  height: 55vw;
+  max-width: 820px;
+  max-height: 820px;
+  bottom: -22vw;
+  right: -22vw;
+  background: radial-gradient(circle, color-mix(in srgb, var(--tiktok-pink) 26%, transparent), transparent 72%);
+  animation: driftPink 26s ease-in-out infinite alternate;
+}
+
+@keyframes driftCyan {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: .8; }
+  100% { transform: translate3d(3vw, 2vw, 0) scale(1.08); opacity: 1; }
+}
+
+@keyframes driftPink {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: .75; }
+  100% { transform: translate3d(-3vw, -2vw, 0) scale(1.1); opacity: .95; }
+}
+
+h1, h2, h3, .panelTitle, .boxTitle, .brand .title, .tab {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   Signature motif: chromatic split
+   A quiet nod to TikTok's own glitch-logo (cyan/red offset
+   ghosting) used sparingly as a top-edge accent — the one
+   recognizable flourish of this design.
+   ============================================================ */
+
+.chromaSplit {
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 2px;
+  pointer-events: none;
+}
+.chromaSplit::before,
+.chromaSplit::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+.chromaSplit::before {
+  background: var(--tiktok-cyan);
+  opacity: .55;
+  transform: translate(-1.5px, 0);
+}
+.chromaSplit::after {
+  background: var(--tiktok-pink);
+  opacity: .55;
+  transform: translate(1.5px, 0);
+}
+
+/* ============================================================
+   Top status bar
+   ============================================================ */
+
+.topStatus {
+  margin: 0 16px;
+  padding: 8px 12px;
+  min-height: 42px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  white-space: normal;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+  font-variant-numeric: tabular-nums;
+  overflow: visible;
+  position: relative;
+  z-index: 5;
+}
+.topStatus .statusAvg {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+  margin-left: 4px;
+}
+.topStatus .statusNet {
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--white) 20%, transparent);
+  background: rgba(255,255,255,0.05);
+}
+.topStatus .statusNet.pos {
+  color: var(--tiktok-cyan);
+  border-color: color-mix(in srgb, var(--tiktok-cyan) 45%, transparent);
+}
+.topStatus .statusNet.neg {
+  color: var(--tiktok-pink);
+  border-color: color-mix(in srgb, var(--tiktok-pink) 45%, transparent);
+}
+
+.topStatus[data-health="ok"] {
+  border-color: color-mix(in srgb, var(--tiktok-cyan) 40%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--tiktok-cyan) 14%, transparent), transparent 70%),
+    var(--glass);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--tiktok-cyan) 12%, transparent);
+}
+
+.topStatus[data-health="degraded"] {
+  border-color: color-mix(in srgb, var(--tiktok-pink) 45%, transparent);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--tiktok-pink) 16%, transparent), transparent 70%),
+    var(--glass);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--tiktok-pink) 14%, transparent);
+}
+
+.topStatus[data-health="unknown"] {
+  border-color: var(--glass-border);
+  background: var(--glass);
+}
+
+/* ============================================================
+   Top bar / brand / tabs / controls
+   ============================================================ */
+
+.topbar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(5,5,7,0.72);
+  position: sticky;
+  top: 0;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  z-index: 10;
+}
+
+.brand .title { font-size: 17px; font-weight: 400; text-transform: uppercase; }
+.brand .subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; font-family: var(--font-body); }
+.brandRow { display:flex; align-items:center; gap:10px; }
+.brandLogo {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid var(--glass-border);
+  background: #000000;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tiktok-cyan) 25%, transparent);
+}
+
+.controls { display:flex; gap: 10px; align-items:center; }
+.controls label { color: var(--muted); font-size: 13px; }
+.controls > label,
+.controls > input,
+.controls > button,
+.controls > .pill {
+  flex-shrink: 0;
+}
+#adminTokenInput {
+  min-width: 220px;
+}
+
+select, button, input[type="text"] {
+  border-radius: 11px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  color: var(--text);
+  padding: 7px 10px;
+  outline: none;
+  font-family: var(--font-body);
+}
+input[type="text"] { min-width: 240px; }
+button { cursor: pointer; transition: background .15s ease, border-color .15s ease; }
+button:hover { background: var(--glass-strong); border-color: color-mix(in srgb, var(--tiktok-cyan) 35%, var(--glass-border)); }
+
+.pill {
+  font-size: 12px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--muted);
+}
+
+#eventsLikesTotalPill {
+  color: var(--tone-like);
+  border-color: color-mix(in srgb, var(--tone-like) 45%, transparent);
+  display: none;
+}
+#eventsJoinedPill {
+  color: var(--tone-member);
+  border-color: color-mix(in srgb, var(--tone-member) 45%, transparent);
+}
+#eventsQuitPill {
+  color: var(--tiktok-pink);
+  border-color: color-mix(in srgb, var(--tiktok-pink) 45%, transparent);
+}
+#eventsNetPill {
+  border-color: color-mix(in srgb, var(--white) 30%, transparent);
+}
+#eventsNetPill.pos {
+  color: var(--tiktok-cyan);
+  border-color: color-mix(in srgb, var(--tiktok-cyan) 50%, transparent);
+}
+#eventsNetPill.neg {
+  color: var(--tiktok-pink);
+  border-color: color-mix(in srgb, var(--tiktok-pink) 50%, transparent);
+}
+
+.tabs { display:flex; gap: 6px; align-items:center; flex-wrap: wrap; }
+.tab {
+  position: relative;
+  border-radius: 999px;
+  padding: 6px 12px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.tab.active {
+  color: var(--text);
+  border-color: color-mix(in srgb, var(--tiktok-cyan) 45%, transparent);
+  background: var(--glass-strong);
+}
+.tab.active::after {
+  content: "";
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -1px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--tiktok-cyan), var(--tiktok-pink));
+  border-radius: 2px;
+}
+
+.view.hidden { display: none; }
+
+.layout {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 14px;
+  padding: 14px;
+  align-items: start;
+}
+
+.layoutSingle {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  padding: 14px;
+}
+
+/* ============================================================
+   Glass panels & boxes
+   ============================================================ */
+
+.panel {
+  position: relative;
+  background: linear-gradient(180deg, var(--glass-strong), var(--glass));
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 14px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.05);
+  overflow: hidden;
+}
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+}
+.panel::before { background: var(--tiktok-cyan); opacity: .5; transform: translate(-1.5px, 0); }
+.panel::after  { background: var(--tiktok-pink); opacity: .5; transform: translate(1.5px, 0); }
+
+.panelTitle {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 14px;
+  letter-spacing: 0.03em;
+  margin-bottom: 10px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  max-height: 46vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding-right: 2px;
+}
+
+.card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: transform .12s ease, background .12s ease, border-color .12s ease;
+}
+.card:hover { transform: translateY(-1px); background: var(--glass-strong); }
+.card.selected {
+  border-color: color-mix(in srgb, var(--tiktok-cyan) 55%, transparent);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tiktok-cyan) 35%, transparent),
+    0 0 0 3px color-mix(in srgb, var(--tiktok-pink) 12%, transparent),
+    0 10px 30px rgba(0,0,0,0.35);
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.995); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes softReveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.card.intro { animation: riseIn .26s ease both; }
+.card.intro:nth-child(1) { animation-delay: .03s; }
+.card.intro:nth-child(2) { animation-delay: .05s; }
+.card.intro:nth-child(3) { animation-delay: .07s; }
+.card.intro:nth-child(4) { animation-delay: .09s; }
+.card.intro:nth-child(5) { animation-delay: .11s; }
+
+body.ready .box canvas {
+  animation: softReveal .32s ease both;
+}
+
+.row { display:flex; align-items:center; justify-content:space-between; gap: 10px; }
+.nameWrap { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.name { font-weight: 800; }
+.openOrder {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--tone-current);
+  border: 1px solid color-mix(in srgb, var(--tone-current) 45%, transparent);
+  border-radius: 999px;
+  padding: 2px 7px;
+  line-height: 1;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+}
+.badge.online { color: var(--green); border-color: color-mix(in srgb, var(--green) 40%, transparent); }
+.badge.offline { color: var(--red); border-color: color-mix(in srgb, var(--red) 40%, transparent); }
+.badge.probing { color: var(--tone-current); }
+.badge.paused { color: var(--tone-system); }
+
+.meta { margin-top: 8px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.meta b { color: var(--text); font-weight: 700; }
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.grid2 > * { min-width: 0; }
+
+.box {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 12px;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 6px 2px 10px;
+  font-family: var(--font-display);
+}
+
+.boxTitle {
+  font-weight: 400;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.boxTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.chartExtrema {
+  font-size: 12px;
+  text-align: right;
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+
+.extremaPeak { color: var(--tiktok-cyan); font-weight: 800; }
+.extremaValley { color: var(--tiktok-pink); font-weight: 800; }
+
+.chartActionBtn {
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.chartActionBtn:hover {
+  border-color: var(--accentA);
+  color: var(--accentA);
+}
+
+.chartHint {
+  color: var(--muted);
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.chartViewport {
+  overflow: hidden;
+  min-height: 310px;
+  height: 310px;
+  width: 100%;
+  max-width: 100%;
+}
+.chartViewport canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.listEditor {
+  width: 100%;
+  min-height: 360px;
+  resize: vertical;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: rgba(0,0,0,0.3);
+  color: #d6f7f6;
+  font-family: var(--font-mono);
+  line-height: 1.35;
+}
+
+.listWarnings {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  min-height: 18px;
+}
+
+.list {
+  color: var(--muted);
+  font-size: 13px;
+  display: grid;
+  gap: 6px;
+}
+.itemLine { display:flex; justify-content:space-between; gap: 10px; }
+.itemLine span:first-child { color: var(--text); font-weight: 700; }
+
+.pre {
+  margin: 0;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  color: #d6f7f6;
+  font-family: var(--font-mono);
+  overflow: auto;
+  max-height: 220px;
+}
+
+.rowControls {
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.checkbox {
+  color: var(--muted);
+  font-size: 12px;
+  display:flex;
+  gap: 6px;
+  align-items:center;
+}
+
+/* ---- Toggle switch ---- */
+.checkbox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 42px;
+  height: 22px;
+  border-radius: 999px;
+  position: relative;
+  cursor: pointer;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  transition: all .2s ease;
+}
+.checkbox input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  transition: transform .2s ease, background .2s ease;
+}
+.checkbox input[type="checkbox"]:checked {
+  border-color: color-mix(in srgb, var(--tiktok-cyan) 55%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tiktok-cyan) 20%, transparent), color-mix(in srgb, var(--tiktok-cyan) 40%, transparent));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--tiktok-cyan) 30%, transparent);
+}
+.checkbox input[type="checkbox"]:checked::before {
+  transform: translateX(20px);
+  background: #ffffff;
+}
+.checkbox input[type="checkbox"]:focus-visible {
+  outline: 2px solid rgba(255,255,255,0.4);
+  outline-offset: 2px;
+}
+
+.chips {
+  display:flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  margin: 6px 0 12px;
+}
+
+.eventChip {
+  padding: 4px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+}
+.eventChip input { accent-color: auto; }
+
+.event-chat { color: var(--tone-chat); border-color: color-mix(in srgb, var(--tone-chat) 46%, transparent); }
+.event-gift { color: var(--tone-gift); border-color: color-mix(in srgb, var(--tone-gift) 46%, transparent); }
+.event-follow { color: var(--tone-follow); border-color: color-mix(in srgb, var(--tone-follow) 46%, transparent); }
+.event-share { color: var(--tone-share); border-color: color-mix(in srgb, var(--tone-share) 46%, transparent); }
+.event-member { color: var(--tone-member); border-color: color-mix(in srgb, var(--tone-member) 46%, transparent); }
+.event-roomUser { color: var(--tone-roomUser); border-color: color-mix(in srgb, var(--tone-roomUser) 46%, transparent); }
+.event-like { color: var(--tone-like); border-color: color-mix(in srgb, var(--tone-like) 46%, transparent); }
+.event-quit { color: var(--tone-system); border-color: color-mix(in srgb, var(--tone-system) 46%, transparent); }
+.event-alert { color: var(--tone-alert); border-color: color-mix(in srgb, var(--tone-alert) 46%, transparent); }
+.event-system { color: var(--tone-system); border-color: color-mix(in srgb, var(--tone-system) 46%, transparent); }
+
+.eventChip:has(input:checked) {
+  background: var(--glass-strong);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+}
+
+.reportPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+
+.reportPreviewCard {
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  padding: 10px;
+  background: var(--glass);
+}
+.reportPreviewCard img {
+  width: 100%;
+  display: block;
+  border-radius: 10px;
+  border: 1px solid color-mix(in srgb, var(--tiktok-cyan) 30%, transparent);
+  margin-bottom: 8px;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+
+.table {
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  overflow: auto;
+  background: rgba(255,255,255,0.015);
+}
+
+.scroll {
+  max-height: 68vh;
+  overflow: auto;
+}
+
+#statusTable {
+  max-height: 220px;
+  overflow-x: hidden;
+}
+
+.tableRow {
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: transparent;
+  font-size: 13px;
+  color: var(--muted);
+}
+.tableRow:nth-child(even):not(.header) {
+  background: rgba(255,255,255,0.02);
+}
+.tableRow > div { min-width: 0; }
+
+.tableRow.header {
+  background: rgba(255,255,255,0.05);
+  color: var(--text);
+  font-weight: 800;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+}
+
+.tableRow:last-child { border-bottom: none; }
+
+.tableRow.alert { grid-template-columns: minmax(170px, 0.95fr) minmax(130px, 0.8fr) minmax(108px, 0.6fr) minmax(260px, 2fr); }
+.tableRow.ev    { grid-template-columns: minmax(170px, 0.95fr) minmax(130px, 0.8fr) minmax(96px, 0.6fr) minmax(130px, 0.8fr) minmax(260px, 2fr); }
+.tableRow.sent  { grid-template-columns: minmax(166px, 0.9fr) minmax(120px, 0.7fr) minmax(130px, 0.75fr) minmax(145px, 0.85fr) minmax(80px, 0.45fr) minmax(260px, 2fr); }
+
+.tableRow.hl { grid-template-columns: 170px 160px 140px 90px 1fr; }
+.tableRow.anomaly { grid-template-columns: 180px 160px 170px 1fr; }
+.tableRow.statusRow { grid-template-columns: 1.3fr 0.9fr 0.9fr 0.9fr 1fr; }
+.tableRow.statusRow > div { overflow: hidden; text-overflow: ellipsis; }
+.tableRow.alert > div,
+.tableRow.ev > div { overflow: hidden; text-overflow: ellipsis; }
+.tableRow.sent > div { overflow: hidden; text-overflow: ellipsis; }
+.tableRow.alert .col-when,
+.tableRow.alert .col-streamer,
+.tableRow.alert .col-type,
+.tableRow.ev .col-when,
+.tableRow.ev .col-streamer,
+.tableRow.ev .col-type,
+.tableRow.ev .col-user { white-space: nowrap; }
+.tableRow.alert .col-message,
+.tableRow.ev .col-message { white-space: normal; overflow-wrap: anywhere; }
+.tableRow.header.alert > div,
+.tableRow.header.ev > div { white-space: nowrap; font-size: 12px; }
+.tableRow.sent > div:nth-child(-n+5),
+.tableRow.header.sent > div { white-space: nowrap; }
+.tableRow.sent > div:last-child { white-space: normal; overflow-wrap: anywhere; }
+
+.tableRow.header.alert,
+.tableRow.header.ev,
+.tableRow.header.sent {
+  background: color-mix(in srgb, var(--tiktok-cyan) 8%, rgba(10,10,13,0.9));
+  position: sticky;
+  top: 0;
+  z-index: 12;
+}
+.tableRow.statusRow.header > div { white-space: nowrap; font-size: 12px; }
+#statusTable .tableRow.header.statusRow {
+  background: color-mix(in srgb, var(--tiktok-cyan) 10%, rgba(10,10,13,0.9));
+  position: sticky;
+  top: 0;
+  z-index: 12;
+}
+
+/* ============================================================
+   Rankings
+   ============================================================ */
+
+.rankingGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(240px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.rankingCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+}
+
+.rankingCard[data-rank="peak"] { border-color: color-mix(in srgb, var(--tone-peak) 32%, var(--glass-border)); }
+.rankingCard[data-rank="current"] { border-color: color-mix(in srgb, var(--tone-current) 32%, var(--glass-border)); }
+.rankingCard[data-rank="mpm"] { border-color: color-mix(in srgb, var(--tone-mpm) 32%, var(--glass-border)); }
+.rankingCard[data-rank="chat"],
+.rankingCard[data-rank="chatters"] { border-color: color-mix(in srgb, var(--tone-chat) 32%, var(--glass-border)); }
+.rankingCard[data-rank="gift"],
+.rankingCard[data-rank="gifters"] { border-color: color-mix(in srgb, var(--tone-gift) 32%, var(--glass-border)); }
+.rankingCard[data-rank="like"] { border-color: color-mix(in srgb, var(--tone-like) 32%, var(--glass-border)); }
+
+.rankingCard[data-rank="peak"] .boxTitle { color: var(--tone-peak); }
+.rankingCard[data-rank="current"] .boxTitle { color: var(--tone-current); }
+.rankingCard[data-rank="mpm"] .boxTitle { color: var(--tone-mpm); }
+.rankingCard[data-rank="chat"] .boxTitle,
+.rankingCard[data-rank="chatters"] .boxTitle { color: var(--tone-chat); }
+.rankingCard[data-rank="gift"] .boxTitle,
+.rankingCard[data-rank="gifters"] .boxTitle { color: var(--tone-gift); }
+.rankingCard[data-rank="like"] .boxTitle { color: var(--tone-like); }
+
+.rankingTall { min-height: 420px; }
+
+.rankingList {
+  display: grid;
+  gap: 6px;
+  max-height: 360px;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.rankRow {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 7px 9px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.rankIdx { color: var(--muted); font-weight: 700; }
+.rankMain { color: var(--text); font-weight: 700; overflow-wrap: anywhere; }
+.rankSub { grid-column: 2 / 4; color: var(--muted); font-size: 12px; line-height: 1.3; }
+.rankVal { color: var(--accentA); font-weight: 800; }
+
+.rankRow.rk-peak .rankVal { color: var(--tone-peak); }
+.rankRow.rk-current .rankVal { color: var(--tone-current); }
+.rankRow.rk-mpm .rankVal { color: var(--tone-mpm); }
+.rankRow.rk-chat .rankVal,
+.rankRow.rk-chatters .rankVal { color: var(--tone-chat); }
+.rankRow.rk-gift .rankVal,
+.rankRow.rk-gifters .rankVal { color: var(--tone-gift); }
+.rankRow.rk-like .rankVal { color: var(--tone-like); }
+
+.metricTag { font-weight: 700; }
+.metricTag.metric-chat { color: var(--tone-chat); }
+.metricTag.metric-viewers { color: var(--tone-roomUser); }
+.metricTag.metric-like { color: var(--tone-like); }
+.metricTag.metric-gift { color: var(--tone-gift); }
+
+.tableRow .cellStrong { color: var(--text); font-weight: 800; }
+
+.typeTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.14);
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.tableRow.ev[class*="evt-"],
+.tableRow.alert[class*="evt-"],
+.tableRow.hl[class*="evt-"] {
+  border-left: 3px solid rgba(255,255,255,0.18);
+}
+
+.tableRow.ev.evt-chat { border-left-color: var(--tone-chat); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-chat) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-gift { border-left-color: var(--tone-gift); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-gift) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-follow { border-left-color: var(--tone-follow); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-follow) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-share { border-left-color: var(--tone-share); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-share) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-member { border-left-color: var(--tone-member); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-member) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-roomUser { border-left-color: var(--tone-roomUser); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-roomUser) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-like { border-left-color: var(--tone-like); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-like) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-quit { border-left-color: var(--tone-system); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-system) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-alert { border-left-color: var(--tone-alert); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-alert) 10%, transparent), transparent 30%); }
+.tableRow.ev.evt-system { border-left-color: var(--tone-system); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-system) 10%, transparent), transparent 30%); }
+
+.tableRow.alert.evt-chat, .tableRow.hl.evt-chat { border-left-color: var(--tone-chat); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-chat) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-gift, .tableRow.hl.evt-gift { border-left-color: var(--tone-gift); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-gift) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-follow, .tableRow.hl.evt-follow { border-left-color: var(--tone-follow); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-follow) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-share, .tableRow.hl.evt-share { border-left-color: var(--tone-share); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-share) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-member, .tableRow.hl.evt-member { border-left-color: var(--tone-member); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-member) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-roomUser, .tableRow.hl.evt-roomUser { border-left-color: var(--tone-roomUser); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-roomUser) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-like, .tableRow.hl.evt-like { border-left-color: var(--tone-like); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-like) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-quit, .tableRow.hl.evt-quit { border-left-color: var(--tone-system); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-system) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-alert, .tableRow.hl.evt-alert { border-left-color: var(--tone-alert); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-alert) 8%, transparent), transparent 34%); }
+.tableRow.alert.evt-system, .tableRow.hl.evt-system { border-left-color: var(--tone-system); background: linear-gradient(90deg, color-mix(in srgb, var(--tone-system) 8%, transparent), transparent 34%); }
+
+.typeTag.evt-chat { color: var(--tone-chat); border-color: color-mix(in srgb, var(--tone-chat) 45%, transparent); }
+.typeTag.evt-gift { color: var(--tone-gift); border-color: color-mix(in srgb, var(--tone-gift) 45%, transparent); }
+.typeTag.evt-follow { color: var(--tone-follow); border-color: color-mix(in srgb, var(--tone-follow) 45%, transparent); }
+.typeTag.evt-share { color: var(--tone-share); border-color: color-mix(in srgb, var(--tone-share) 45%, transparent); }
+.typeTag.evt-member { color: var(--tone-member); border-color: color-mix(in srgb, var(--tone-member) 45%, transparent); }
+.typeTag.evt-roomUser { color: var(--tone-roomUser); border-color: color-mix(in srgb, var(--tone-roomUser) 45%, transparent); }
+.typeTag.evt-like { color: var(--tone-like); border-color: color-mix(in srgb, var(--tone-like) 45%, transparent); }
+.typeTag.evt-quit { color: var(--tone-system); border-color: color-mix(in srgb, var(--tone-system) 45%, transparent); }
+.typeTag.evt-alert { color: var(--tone-alert); border-color: color-mix(in srgb, var(--tone-alert) 45%, transparent); }
+.typeTag.evt-system { color: var(--tone-system); border-color: color-mix(in srgb, var(--tone-system) 45%, transparent); }
+
+.sentTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.18);
+  font-weight: 700;
+  font-size: 12px;
+}
+.sentTag.sent-pos { color: #8affc8; border-color: rgba(102,255,204,0.45); }
+.sentTag.sent-neu { color: #dfe8ef; border-color: rgba(223,232,239,0.32); }
+.sentTag.sent-neg { color: #ff9cae; border-color: rgba(254,44,85,0.45); }
+
+.tableRow.sent.sent-pos { border-left: 3px solid rgba(102,255,204,0.75); }
+.tableRow.sent.sent-neg { border-left: 3px solid rgba(254,44,85,0.75); }
+.tableRow.sent.sent-neu { border-left: 3px solid rgba(255,255,255,0.3); }
+
+.footer {
+  padding: 12px 14px;
+  border-top: 1px solid var(--glass-border);
+  color: var(--muted);
+}
+
+.muted { color: var(--muted); }
+
+.tableRow.ev.isHighlight, .tableRow.hl.isHighlight {
+  outline: 1px solid color-mix(in srgb, var(--tiktok-pink) 34%, transparent);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--tiktok-pink) 10%, transparent), color-mix(in srgb, var(--tiktok-cyan) 7%, transparent));
+}
+
+@keyframes eventIn {
+  from { opacity: 0; transform: translateY(-6px); background: color-mix(in srgb, var(--tiktok-cyan) 12%, transparent); }
+  to   { opacity: 1; transform: translateY(0); background: transparent; }
+}
+
+.tableRow.ev.newEvent { animation: eventIn .34s ease both; }
+
+#eventsList.scroll { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  body::before, body::after { animation: none; }
+  .tableRow.ev.newEvent { animation: none; }
+  #eventsList.scroll { scroll-behavior: auto; }
+}
+
+.controls select,
+select {
+  color-scheme: dark;
+  background-color: rgba(10,10,13,0.9) !important;
+  color: #ffffff !important;
+  border-color: var(--glass-border) !important;
+}
+select option {
+  background-color: #0b0b10 !important;
+  color: #ffffff !important;
+}
+select option:checked,
+select option:hover {
+  background-color: color-mix(in srgb, var(--tiktok-cyan) 28%, #0b0b10) !important;
+  color: #000000 !important;
+}
+
+#view-highlights.layout {
+  min-height: calc(100vh - 72px);
+  align-items: stretch;
+}
+#hlResultsPanel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+#hlList.table {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: auto;
+  max-height: none;
+}
+
+#totalsTitle,
+#totalsBox { display: none !important; }
+.box:has(#totalsBox) { display: none; }
+
+@media (max-width: 980px) {
+  .layout { grid-template-columns: 1fr; }
+  .topbar { flex-wrap: wrap; align-items: flex-start; }
+  .tabs { order: 3; width: 100%; flex-wrap: wrap; }
+  .controls { flex-wrap: wrap; width: 100%; }
+  .grid2 { grid-template-columns: 1fr; }
+  .chartExtrema { white-space: normal; text-align: left; }
+  .controls input[type="text"] { min-width: 180px; }
+  .rankingGrid { grid-template-columns: 1fr; }
+  .rankingTall { min-height: 260px; }
+  .rankingList { max-height: 300px; }
+}
+
+.statusHint {
+  position: relative;
+  cursor: help;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.statusHint::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 12px);
+  transform: translateX(-50%) translateY(-6px) scale(.98);
+  min-width: 200px;
+  max-width: 320px;
+  white-space: pre-line;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  background: rgba(10,10,14,0.92);
+  backdrop-filter: var(--glass-blur-sm);
+  -webkit-backdrop-filter: var(--glass-blur-sm);
+  color: #f2fdff;
+  font-size: 12px;
+  line-height: 1.38;
+  box-shadow:
+    0 14px 34px rgba(0,0,0,0.5),
+    0 0 18px color-mix(in srgb, var(--tiktok-cyan) 16%, transparent),
+    0 0 14px color-mix(in srgb, var(--tiktok-pink) 12%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 60;
+  transition: opacity .16s ease, transform .16s ease;
+}
+.statusHint::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid color-mix(in srgb, var(--tiktok-cyan) 40%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 61;
+  transition: opacity .16s ease;
+}
+.statusHint:hover::after { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+.statusHint:hover::before { opacity: 1; }

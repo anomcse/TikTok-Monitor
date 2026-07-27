@@ -1,0 +1,372 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TTKLiveMonitor V1.0</title>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0/dist/chartjs-plugin-zoom.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brandRow">
+        <img
+          id="brandLogo"
+          class="brandLogo"
+          src="/assets/tiktok-icon.png"
+          alt="TikTok icon"
+          onerror="this.style.display='none'"
+        />
+        <div class="title">TTKLiveMonitor V1.0</div>
+      </div>
+      <div class="subtitle">Dashboard</div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="events">Events</button>
+      <button class="tab" data-tab="alerts">Alerts</button>
+      <button class="tab" data-tab="anomalies">Anomalies</button>
+      <button class="tab" data-tab="rankings">Rankings</button>
+      <button class="tab" data-tab="reports">Reports</button>
+      <button class="tab" data-tab="highlights">Highlights</button>
+      <button class="tab" data-tab="lists">Lists</button>
+    </div>
+
+    <div class="controls">
+      <label>
+        Streamer:
+        <select id="globalStreamer"><option value="all">all</option></select>
+      </label>
+      <label>
+        Range:
+        <select id="rangeSelect">
+          <option value="1h">1h</option>
+          <option value="6h">6h</option>
+          <option value="24h" selected>24h</option>
+        </select>
+      </label>
+      <label>
+        Day:
+        <select id="daySelect"></select>
+      </label>
+    </div>
+  </header>
+
+  <div id="topStatus" class="topStatus"></div>
+
+  <main id="view-dashboard" class="layout view">
+    <section class="panel">
+      <div class="panelTitle">Streamers</div>
+      <div id="statusActions" class="rowControls"></div>
+      <div id="statusTable" class="table" style="margin-bottom:10px;"></div>
+      <div id="cards" class="cards"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panelTitle">
+        Streamer details
+        <span id="selectedStreamer" class="muted">(click a card)</span>
+      </div>
+
+      <div class="grid2">
+        <div class="box chartBox">
+          <div class="boxTitleRow">
+            <div id="mpmTitle" class="boxTitle">Msgs/min</div>
+            <div id="mpmExtrema" class="chartExtrema muted">Max.: - | Min.: -</div>
+          </div>
+          <div class="chartHint">Scroll = zoom | Arraste = pan</div>
+          <div class="chartViewport">
+            <canvas id="chartMpm"></canvas>
+          </div>
+        </div>
+
+        <div class="box chartBox">
+          <div class="boxTitleRow">
+            <div id="viewersTitle" class="boxTitle">Viewers</div>
+            <div id="viewersExtrema" class="chartExtrema muted">Max.: - | Min.: -</div>
+          </div>
+          <div class="chartHint">Scroll = zoom | Arraste = pan</div>
+          <div class="chartViewport">
+            <canvas id="chartViewers"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="box">
+          <div id="topChatTitle" class="boxTitle">🗨️ Top chatters</div>
+          <div id="topChatters" class="list"></div>
+        </div>
+
+        <div class="box">
+          <div id="topGiftTitle" class="boxTitle">🎁 Top gifters</div>
+          <div id="topGifters" class="list"></div>
+        </div>
+      </div>
+
+      <div class="box">
+        <div id="totalsTitle" class="boxTitle">Totals</div>
+        <pre id="totalsBox" class="pre"></pre>
+      </div>
+    </section>
+  </main>
+
+  <main id="view-events" class="layoutSingle view hidden">
+    <section class="panel">
+      <div class="panelTitle">📡 Events (chat / gifts / follows / etc)</div>
+
+      <div class="rowControls">
+        <label>
+          Streamer:
+          <select id="eventStreamer"></select>
+        </label>
+
+        <label>
+          Search:
+          <input id="eventSearch" type="text" placeholder="user or text..." />
+        </label>
+
+        <button id="eventsRefreshBtn">Refresh</button>
+        <button id="eventsPauseBtn">Pause</button>
+        <button id="eventsFollowBtn">Follow live</button>
+        <span id="eventsInfoPill" class="pill">auto-scroll: ON</span>
+        <span id="eventsJoinedPill" class="pill">🧩 joined: -</span>
+        <span id="eventsQuitPill" class="pill">🚪 quit: -</span>
+        <span id="eventsNetPill" class="pill">Δ: -</span>
+      </div>
+
+      <div class="chips">
+        <label class="checkbox eventChip event-chat"><input type="checkbox" id="evChat" checked /> 💬 chat</label>
+        <label class="checkbox eventChip event-gift"><input type="checkbox" id="evGift" checked /> 🎁 gift</label>
+        <label class="checkbox eventChip event-follow"><input type="checkbox" id="evFollow" /> ➕ follow</label>
+        <label class="checkbox eventChip event-share"><input type="checkbox" id="evShare" /> 🔁 share</label>
+        <label class="checkbox eventChip event-member"><input type="checkbox" id="evMember" /> 🧩 joined</label>
+        <label class="checkbox eventChip event-roomUser"><input type="checkbox" id="evRoomUser" /> 👀 viewers</label>
+        <label class="checkbox eventChip event-like"><input type="checkbox" id="evLike" checked /> ❤️ likes</label>
+        <label class="checkbox eventChip event-quit"><input type="checkbox" id="evQuit" /> 🚪 quit (idle)</label>
+      </div>
+
+      <div id="eventsList" class="table scroll"></div>
+    </section>
+  </main>
+
+  <main id="view-alerts" class="layoutSingle view hidden">
+    <section class="panel">
+      <div class="panelTitle">Alerts</div>
+
+      <div class="rowControls">
+        <label>
+          Streamer:
+          <select id="alertStreamer"></select>
+        </label>
+
+        <label class="checkbox">
+          <input type="checkbox" id="alertIncludeSystem" checked />
+          include system (offline/error/connection)
+        </label>
+
+        <button id="alertsRefreshBtn">Refresh</button>
+      </div>
+
+      <div id="alertsList" class="table scroll"></div>
+    </section>
+  </main>
+
+  <main id="view-anomalies" class="layoutSingle view hidden">
+    <section class="panel">
+      <div class="panelTitle">Anomalies</div>
+      <div class="rowControls">
+        <label>
+          Streamer:
+          <select id="anomalyStreamer"></select>
+        </label>
+        <button id="anomaliesRefreshBtn">Refresh</button>
+      </div>
+      <div id="anomaliesList" class="table scroll"></div>
+    </section>
+  </main>
+
+  <main id="view-rankings" class="layoutSingle view hidden">
+    <section class="panel">
+      <div class="panelTitle">🏆 Daily rankings</div>
+      <div class="sectionTitle">Streamer leaderboards</div>
+      <div class="rankingGrid">
+        <div class="box rankingCard" data-rank="peak">
+          <div class="boxTitle">👑 Top streamers (peak viewers)</div>
+          <div id="rkPeakViewers" class="rankingList"></div>
+        </div>
+        <div class="box rankingCard" data-rank="current">
+          <div class="boxTitle">👀 Top streamers (current viewers)</div>
+          <div id="rkCurrentViewers" class="rankingList"></div>
+        </div>
+        <div class="box rankingCard" data-rank="mpm">
+          <div class="boxTitle">⚡ Top streamers (current msgs/min)</div>
+          <div id="rkMsgsPerMin" class="rankingList"></div>
+        </div>
+        <div class="box rankingCard" data-rank="chat">
+          <div class="boxTitle">💬 Top streamers (total chats)</div>
+          <div id="rkTotalChats" class="rankingList"></div>
+        </div>
+        <div class="box rankingCard" data-rank="gift">
+          <div class="boxTitle">🎁 Top streamers (total gifts)</div>
+          <div id="rkTotalGifts" class="rankingList"></div>
+        </div>
+      </div>
+
+      <div class="sectionTitle">Global users (with sources)</div>
+      <div class="grid2">
+        <div class="box rankingCard rankingTall" data-rank="chatters">
+          <div class="boxTitle">🗨️ Top chatters (global today)</div>
+          <div id="rkGlobalChatters" class="rankingList"></div>
+        </div>
+        <div class="box rankingCard rankingTall" data-rank="gifters">
+          <div class="boxTitle">🎁 Top gifters (global today)</div>
+          <div id="rkGlobalGifters" class="rankingList"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main id="view-highlights" class="layout view hidden">
+    <section class="panel" id="hlFiltersPanel">
+      <div class="panelTitle">Highlights (monitored users)</div>
+
+      <div class="row" style="gap:10px; flex-wrap:wrap; align-items:center;">
+        <label>User:
+          <select id="hlUser"></select>
+        </label>
+
+        <label>Streamer:
+          <select id="hlStreamer"></select>
+        </label>
+
+        <label>Types:
+          <select id="hlTypes">
+            <option value="all">all</option>
+            <option value="chat,gift">chat + gift</option>
+            <option value="chat">chat</option>
+            <option value="gift">gift</option>
+            <option value="follow">follow</option>
+            <option value="member">joined</option>
+            <option value="share">share</option>
+          </select>
+        </label>
+
+        <label>Search:
+          <input id="hlSearch" placeholder="user, message, streamer..." />
+        </label>
+
+        <button id="hlRefreshBtn">Refresh</button>
+        <span id="hlInfoPill" class="pill">-</span>
+      </div>
+    </section>
+
+    <section class="panel" id="hlResultsPanel">
+      <div class="panelTitle">Highlight events</div>
+      <div id="hlList" class="table"></div>
+    </section>
+  </main>
+
+  <main id="view-reports" class="layoutSingle view hidden">
+    <section class="panel">
+      <div class="panelTitle">🧾 Reports (PNG para WhatsApp)</div>
+
+      <div class="rowControls">
+        <label>
+          Streamer:
+          <select id="reportStreamer"></select>
+        </label>
+
+        <label>
+          User:
+          <input id="reportSearch" type="text" placeholder="user" />
+        </label>
+
+        <label>
+          Limite:
+          <select id="reportLimit">
+            <option value="200">200</option>
+            <option value="400" selected>400</option>
+            <option value="800">800</option>
+            <option value="1200">1200</option>
+          </select>
+        </label>
+
+        <button id="reportPreviewBtn">Gerar preview</button>
+        <button id="reportDownloadBtn">Baixar PNGs</button>
+        <button id="reportModeBtn">Modo: compacto</button>
+        <span id="reportInfoPill" class="pill">-</span>
+      </div>
+
+      <div class="chips">
+        <label class="checkbox eventChip event-chat"><input type="checkbox" id="rpChat" checked /> 💬 chat</label>
+        <label class="checkbox eventChip event-gift"><input type="checkbox" id="rpGift" checked /> 🎁 gift</label>
+        <label class="checkbox eventChip event-member"><input type="checkbox" id="rpMember" checked /> 🧩 joined</label>
+        <label class="checkbox eventChip event-follow"><input type="checkbox" id="rpFollow" /> ➕ follow</label>
+        <label class="checkbox eventChip event-share"><input type="checkbox" id="rpShare" /> 🔁 share</label>
+        <label class="checkbox eventChip event-roomUser"><input type="checkbox" id="rpRoomUser" /> 👀 viewers</label>
+        <label class="checkbox eventChip event-goalUpdate"><input type="checkbox" id="rpGoalUpdate" /> 🎯 goal update</label>
+        <label class="checkbox eventChip event-pollMessage"><input type="checkbox" id="rpPollMessage" /> 📊 poll</label>
+        <label class="checkbox eventChip event-linkMicBattle"><input type="checkbox" id="rpLinkMicBattle" /> ⚔️ link mic battle</label>
+        <label class="checkbox eventChip event-roomPin"><input type="checkbox" id="rpRoomPin" /> 📌 room pin</label>
+        <label class="checkbox eventChip event-quit"><input type="checkbox" id="rpQuit" /> 🚪 quit (idle)</label>
+      </div>
+
+      <div id="reportPreview" class="reportPreviewGrid"></div>
+    </section>
+  </main>
+
+  <main id="view-lists" class="layoutSingle view hidden">
+    <section class="panel">
+      <div class="panelTitle">Manage Lists</div>
+
+      <div class="grid2">
+        <div class="box">
+          <div class="boxTitle">streamers.txt</div>
+          <div class="rowControls">
+            <input id="streamerAddInput" type="text" placeholder="new streamer (without @)" />
+            <button id="streamerAddBtn">Add</button>
+          </div>
+          <textarea id="streamersEditor" class="listEditor" spellcheck="false"></textarea>
+          <div id="streamersWarnings" class="listWarnings muted">-</div>
+          <div class="rowControls">
+            <button id="streamersReloadBtn">Reload</button>
+            <button id="streamersSaveBtn">Save</button>
+            <button id="streamersCleanBtn">Clean invalid/duplicates</button>
+            <span id="streamersInfo" class="pill">-</span>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="boxTitle">highlight_users.txt</div>
+          <div class="rowControls">
+            <input id="highlightAddInput" type="text" placeholder="new user (without @)" />
+            <button id="highlightAddBtn">Add</button>
+          </div>
+          <textarea id="highlightUsersEditor" class="listEditor" spellcheck="false"></textarea>
+          <div id="highlightUsersWarnings" class="listWarnings muted">-</div>
+          <div class="rowControls">
+            <button id="highlightUsersReloadBtn">Reload</button>
+            <button id="highlightUsersSaveBtn">Save</button>
+            <button id="highlightUsersCleanBtn">Clean invalid/duplicates</button>
+            <span id="highlightUsersInfo" class="pill">-</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
+

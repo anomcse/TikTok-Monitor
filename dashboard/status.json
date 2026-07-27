@@ -1,0 +1,195 @@
+{
+  "version": "1.1.0",
+  "uptimeMs": 440276,
+  "ts": "2026-07-04T10:37:23.827Z",
+  "health": "OK",
+  "counts": {
+    "online": 2,
+    "probing": 0,
+    "offline": 0,
+    "paused": 0,
+    "degraded": 0
+  },
+  "summaries": {
+    "day": {
+      "id": "2026-07-04",
+      "kind": "daily",
+      "streamers": {
+        "weathernewslive": {
+          "peakViewers": 0,
+          "peakMsgsPerMin": 9,
+          "totalSnapshots": 7,
+          "totals": {
+            "chat": 24,
+            "gift": 0,
+            "member": 430,
+            "follow": 2,
+            "share": 0,
+            "like": 68,
+            "roomUser": 220,
+            "quit": 0,
+            "goalUpdate": 0,
+            "pollMessage": 0,
+            "linkMicBattle": 0,
+            "roomPin": 0
+          },
+          "lastSnapshotTs": "2026-07-04T10:37:03.707Z"
+        },
+        "alarabytv": {
+          "peakViewers": 0,
+          "peakMsgsPerMin": 85,
+          "totalSnapshots": 7,
+          "totals": {
+            "chat": 533,
+            "gift": 0,
+            "member": 715,
+            "follow": 23,
+            "share": 12,
+            "like": 380,
+            "roomUser": 212,
+            "quit": 0,
+            "goalUpdate": 0,
+            "pollMessage": 0,
+            "linkMicBattle": 0,
+            "roomPin": 0
+          },
+          "lastSnapshotTs": "2026-07-04T10:37:03.708Z"
+        }
+      },
+      "eventTotals": {
+        "chat": 557,
+        "gift": 0,
+        "member": 1145,
+        "follow": 25,
+        "share": 12,
+        "like": 448,
+        "roomUser": 432,
+        "quit": 0,
+        "goalUpdate": 0,
+        "pollMessage": 0,
+        "linkMicBattle": 0,
+        "roomPin": 0
+      },
+      "anomalyTotals": {},
+      "startedAt": "2026-07-04T10:30:03.558Z"
+    },
+    "week": {
+      "id": "2026-W26",
+      "kind": "weekly",
+      "streamers": {
+        "weathernewslive": {
+          "peakViewers": 0,
+          "peakMsgsPerMin": 9,
+          "totalSnapshots": 7,
+          "totals": {
+            "chat": 24,
+            "gift": 0,
+            "member": 430,
+            "follow": 2,
+            "share": 0,
+            "like": 68,
+            "roomUser": 220,
+            "quit": 0,
+            "goalUpdate": 0,
+            "pollMessage": 0,
+            "linkMicBattle": 0,
+            "roomPin": 0
+          },
+          "lastSnapshotTs": "2026-07-04T10:37:03.707Z"
+        },
+        "alarabytv": {
+          "peakViewers": 0,
+          "peakMsgsPerMin": 85,
+          "totalSnapshots": 7,
+          "totals": {
+            "chat": 533,
+            "gift": 0,
+            "member": 715,
+            "follow": 23,
+            "share": 12,
+            "like": 380,
+            "roomUser": 212,
+            "quit": 0,
+            "goalUpdate": 0,
+            "pollMessage": 0,
+            "linkMicBattle": 0,
+            "roomPin": 0
+          },
+          "lastSnapshotTs": "2026-07-04T10:37:03.708Z"
+        }
+      },
+      "eventTotals": {
+        "chat": 557,
+        "gift": 0,
+        "member": 1145,
+        "follow": 25,
+        "share": 12,
+        "like": 448,
+        "roomUser": 432,
+        "quit": 0,
+        "goalUpdate": 0,
+        "pollMessage": 0,
+        "linkMicBattle": 0,
+        "roomPin": 0
+      },
+      "anomalyTotals": {},
+      "startedAt": "2026-07-04T10:30:03.558Z"
+    }
+  },
+  "streamers": {
+    "weathernewslive": {
+      "status": "online",
+      "reconnects": 1,
+      "lastAttemptAt": 1783161003566,
+      "onlineSince": 1783161443665,
+      "offlineSince": null,
+      "cooldownUntil": null,
+      "paused": false,
+      "connection": {
+        "streamer": "weathernewslive",
+        "connected": true,
+        "connecting": false,
+        "paused": false,
+        "roomId": "7655734789424696085",
+        "reconnectAttempts": 0,
+        "consecutiveFailures": 0,
+        "circuitOpenUntil": null,
+        "circuitOpen": false,
+        "lastDisconnectReason": null,
+        "connectedAt": 1783161007279,
+        "connectedSinceMs": 436548,
+        "lastAnyEventTs": 1783161443665,
+        "lastInteractiveEventTs": 1783161443665,
+        "lastViewerCount": 0,
+        "eventsSinceConnect": 734
+      }
+    },
+    "alarabytv": {
+      "status": "online",
+      "reconnects": 1,
+      "lastAttemptAt": 1783161018568,
+      "onlineSince": 1783161443332,
+      "offlineSince": null,
+      "cooldownUntil": null,
+      "paused": false,
+      "connection": {
+        "streamer": "alarabytv",
+        "connected": true,
+        "connecting": false,
+        "paused": false,
+        "roomId": "7655998503671335687",
+        "reconnectAttempts": 0,
+        "consecutiveFailures": 0,
+        "circuitOpenUntil": null,
+        "circuitOpen": false,
+        "lastDisconnectReason": null,
+        "connectedAt": 1783161022529,
+        "connectedSinceMs": 421298,
+        "lastAnyEventTs": 1783161443332,
+        "lastInteractiveEventTs": 1783161443332,
+        "lastViewerCount": 0,
+        "eventsSinceConnect": 1864
+      }
+    }
+  }
+}

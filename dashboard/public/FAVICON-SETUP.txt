@@ -1,0 +1,8 @@
+Para ativar o icone na aba do navegador, adicione estes arquivos em `dashboard/public`:
+
+1. `favicon.ico`
+2. `favicon-32x32.png`
+3. `apple-touch-icon.png`
+
+Use o mesmo logo do TikTok em versoes adequadas.
+Assim que os arquivos existirem, o navegador passa a usar automaticamente.

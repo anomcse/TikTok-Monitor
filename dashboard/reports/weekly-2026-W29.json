@@ -1,0 +1,64 @@
+{
+  "id": "2026-W29",
+  "kind": "weekly",
+  "streamers": {
+    "weathernewslive": {
+      "peakViewers": 0,
+      "peakMsgsPerMin": 4,
+      "totalSnapshots": 11,
+      "totals": {
+        "chat": 15,
+        "gift": 0,
+        "member": 578,
+        "follow": 1,
+        "share": 3,
+        "like": 13,
+        "roomUser": 315,
+        "quit": 0,
+        "goalUpdate": 0,
+        "pollMessage": 0,
+        "linkMicBattle": 0,
+        "roomPin": 0
+      },
+      "lastSnapshotTs": "2026-07-26T07:42:28.132Z"
+    },
+    "alarabytv": {
+      "peakViewers": 0,
+      "peakMsgsPerMin": 44,
+      "totalSnapshots": 11,
+      "totals": {
+        "chat": 326,
+        "gift": 0,
+        "member": 1175,
+        "follow": 52,
+        "share": 45,
+        "like": 632,
+        "roomUser": 329,
+        "quit": 0,
+        "goalUpdate": 0,
+        "pollMessage": 0,
+        "linkMicBattle": 0,
+        "roomPin": 0
+      },
+      "lastSnapshotTs": "2026-07-26T07:42:28.132Z"
+    }
+  },
+  "eventTotals": {
+    "chat": 341,
+    "gift": 0,
+    "member": 1753,
+    "follow": 53,
+    "share": 48,
+    "like": 645,
+    "roomUser": 644,
+    "quit": 0,
+    "goalUpdate": 0,
+    "pollMessage": 0,
+    "linkMicBattle": 0,
+    "roomPin": 0
+  },
+  "anomalyTotals": {},
+  "startedAt": "2026-07-26T07:31:27.908Z",
+  "endedAt": "2026-07-26T07:42:59.752Z",
+  "forced": true
+}
